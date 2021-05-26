@@ -1,4 +1,4 @@
-package com.hainguyen.kotlingooglesummary.OneKotlinBasics
+package com.hainguyen.kotlingooglesummary.L1KotlinBasics
 
 import android.util.Log
 import java.util.*
