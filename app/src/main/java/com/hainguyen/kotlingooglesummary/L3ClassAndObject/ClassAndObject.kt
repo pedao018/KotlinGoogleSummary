@@ -67,6 +67,60 @@ class ClassAndObject {
             Log.e("ClassAndObject", "Shark: " + shark.color + "\n") //Shark: Red
             val clownFish = ClownFish()
             Log.e("ClassAndObject", "Clown: " + clownFish.fishColor.color + "") //Clown: Red
+
+
+            //---Data Class ---------------------------------------------------------------------------------->
+            val fish1 = FishDataClass1(name = "Fish 1", lenght = 1.5F)
+            val fish2 = FishDataClass1(name = "Fish 2", color = "Red", lenght = 2F)
+            val fish3 = FishDataClass1(name = "Fish 3", color = "Green", lenght = 1.7F)
+
+            //FishDataClass1(name=Fish 1, color=null, lenght=1.5)
+            //FishDataClass1(name=Fish 2, color=Red, lenght=2.0)
+            //FishDataClass1(name=Fish 3, color=Green, lenght=1.7)
+            Log.e("ClassAndObject", "$fish1 \n $fish2 \n $fish3")
+
+            val fish4 = FishDataClass1(name = "Fish 3", color = "Green", lenght = 1.7F)
+            fish4.power = 100
+            if (fish4 == fish3) //với data class thì là so sánh = giá trị trong primary contractor
+                Log.e("ClassAndObject", "1.true") //true
+            if (fish4 === fish3) //với data class thì so sánh có cùng trỏ tới 1 giá trị
+                Log.e("ClassAndObject", "2.true") //false
+
+
+            val fish5 = fish4
+            //FishDataClass1(name=Fish 3, color=Green, lenght=1.7) 100 	 FishDataClass1(name=Fish 3, color=Green, lenght=1.7) 100
+            Log.e("ClassAndObject", "$fish4 ${fish4.power} \t $fish5 ${fish5.power}")
+            fish5.name = "Fish 5"
+            fish4.power = 150
+            //FishDataClass1(name=Fish 5, color=Green, lenght=1.7) 150 	 FishDataClass1(name=Fish 5, color=Green, lenght=1.7) 150
+            Log.e("ClassAndObject", "$fish4 ${fish4.power} \t $fish5 ${fish5.power}")
+            if (fish5 === fish4) //với data class thì so sánh có cùng trỏ tới 1 giá trị
+                Log.e("ClassAndObject", "3.true") //3.true
+
+            //.copy() chỉ copy giá trị trong primary contractor
+            fish4.name = "Fish 4"
+            val fish6 = fish4.copy()
+            //FishDataClass1(name=Fish 4, color=Green, lenght=1.7) 150 	 FishDataClass1(name=Fish 4, color=Green, lenght=1.7) 50
+            Log.e("ClassAndObject", "$fish4 ${fish4.power} \t $fish6 ${fish6.power}")
+            fish6.name = "Fish 6"
+            //FishDataClass1(name=Fish 4, color=Green, lenght=1.7) 150 	 FishDataClass1(name=Fish 6, color=Green, lenght=1.7) 50
+            Log.e("ClassAndObject", "$fish4 ${fish4.power} \t $fish6 ${fish6.power}")
+
+
+            //Cách lấy giá trị của data class vào các biến
+            /*Cách 1
+            val nameFish4 = fish4.name
+            val colorFish4 = fish4.color
+            val lenghtFish4 = fish4.lenght
+            val powerFish4 = fish4.power*/
+
+            //Cách 2
+            //val (nameFish4, colorFish4, lenghtFish4, powerFish4) = fish4 //Bị báo lỗi
+            //val (nameFish4, lenghtFish4) = fish4 //vẫn chạy nhưng nó gán theo thứ tự, và lenghtFish4 sẽ là giá trị color của fish4
+            val (nameFish4, colorFish4, lenghtFish4) = fish4
+            Log.e("ClassAndObject", "$nameFish4 $colorFish4  $lenghtFish4")
+            val (a, _, c) = fish4
+            Log.e("ClassAndObject", "$a $c")
         }
     }
 
@@ -256,4 +310,10 @@ class ClassAndObject {
         FishAction by PrintFishAction_Eat("Eat Meat")
 
     class ClownFish(val fishColor: FishColor = FishColor_Red)
+
+
+    //---Data Class ---------------------------------------------------------------------------------->
+    data class FishDataClass1(var name: String, var color: String? = null, var lenght: Float) {
+        var power: Int = 50
+    }
 }
